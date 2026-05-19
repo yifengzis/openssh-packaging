@@ -1,0 +1,18 @@
+[Unit]
+Description=OpenSSH server daemon
+Documentation=man:sshd(8) man:sshd_config(5)
+After=network.target
+Wants=sshd-keygen@rsa.service sshd-keygen@ecdsa.service sshd-keygen@ed25519.service
+After=sshd-keygen@rsa.service sshd-keygen@ecdsa.service sshd-keygen@ed25519.service
+
+[Service]
+Type=notify
+ExecStartPre=/usr/sbin/sshd -t
+ExecStart=/usr/sbin/sshd -D
+ExecReload=/bin/kill -HUP $MAINPID
+KillMode=process
+Restart=on-failure
+RestartSec=42s
+
+[Install]
+WantedBy=multi-user.target

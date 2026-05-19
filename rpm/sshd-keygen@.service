@@ -1,0 +1,11 @@
+[Unit]
+Description=OpenSSH %i host key generation
+ConditionFileNotEmpty=|!/etc/ssh/ssh_host_%i_key
+Before=sshd.service
+
+[Service]
+Type=oneshot
+ExecStart=/usr/bin/ssh-keygen -q -t %i -f /etc/ssh/ssh_host_%i_key -N ""
+
+[Install]
+WantedBy=sshd.service
